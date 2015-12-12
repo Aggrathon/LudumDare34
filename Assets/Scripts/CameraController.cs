@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void Update () {
-		camera.orthographicSize *= 1-(Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomMultiplier);
+		camera.orthographicSize *= 1-(Input.GetAxis("Scroll") * Time.deltaTime * zoomMultiplier);
 		if(doNotRotate)
 		{
 			transform.rotation = rotation;
