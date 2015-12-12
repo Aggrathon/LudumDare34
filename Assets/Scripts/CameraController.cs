@@ -9,11 +9,14 @@ public class CameraController : MonoBehaviour {
 
 	public float zoomMultiplier = 10f;
 	public bool doNotRotate = false;
+	public Transform player;
 
 	void Awake()
 	{
 		camera = GetComponent<Camera>();
 		rotation = transform.rotation;
+		if (player == null)
+			player = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
 	void Update () {
@@ -22,6 +25,7 @@ public class CameraController : MonoBehaviour {
 		{
 			transform.rotation = rotation;
 		}
+		transform.position = new Vector3(player.position.x, player.position.y, transform.position.z);
 	}
 
 	public void SetCameraRotating(bool value)

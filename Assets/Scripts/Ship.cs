@@ -38,14 +38,15 @@ public class Ship : MonoBehaviour
 	public int currentHealth = 3;
 	public int currentPopulation = 0;
 	public int currentFood = 3;
-	public int currentProduction = 3;
+	public int currentProducts = 3;
 
-	public int currentCargo { get { return currentPopulation + currentFood + currentProduction; } }
+	public int currentCargo { get { return currentPopulation + currentFood + currentProducts; } }
 
 	[Header("GameObjects")]
 	public ShipUI shipStats;
 	public SolarSystem solarSystem;
 	public Shield shield;
+	public Trade trade;
 
 	[Header("Targetting")]
 	public float targetLength = 800f;
@@ -67,6 +68,8 @@ public class Ship : MonoBehaviour
 		SwitchSystem(solarSystem);
 		if (target == null)
 			targetMarker.gameObject.SetActive(false);
+
+		shipStats.setCargo((float)currentCargo / (float)maxCargo);
 
 		raycastStart = GetComponent<BoxCollider2D>().size.y * 0.5f * transform.lossyScale.y + 0.5f;
 	}
@@ -133,7 +136,7 @@ public class Ship : MonoBehaviour
 			noButton = true;
 		}
 
-		RaycastHit2D ray = Physics2D.Raycast(transform.position+transform.up*raycastStart, transform.up, targetLength);
+		RaycastHit2D ray = Physics2D.Raycast(transform.position + transform.up * raycastStart, transform.up, targetLength);
 		if (ray.collider != null && ray.collider.tag == "Ship")
 		{
 			target = ray.collider.transform;
@@ -143,7 +146,7 @@ public class Ship : MonoBehaviour
 		else if (target != null)
 		{
 			float angle = Vector2.Angle(transform.forward, target.transform.position - transform.position);
-			if(angle < targetAngle && angle > -targetAngle)
+			if (angle < targetAngle && angle > -targetAngle)
 			{
 				targetMarker.position = target.position;
 			}
@@ -153,7 +156,7 @@ public class Ship : MonoBehaviour
 				targetMarker.gameObject.SetActive(false);
 			}
 		}
-    }
+	}
 
 	void FixedUpdate()
 	{
@@ -168,6 +171,30 @@ public class Ship : MonoBehaviour
 			case MoveState.right:
 				rigidbody.AddTorque(-Time.fixedDeltaTime * turnRate);
 				break;
+		}
+	}
+
+	public void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Missile" || collision.gameObject.tag == "Ship")
+		{
+			collision.gameObject.SetActive(false);
+			currentHealth--;
+			if (currentHealth == 0)
+			{
+				//LOSE
+			}
+			shipStats.setHealth((float)currentHealth/(float)maxHealth);
+		}
+		else if (collision.gameObject.tag == "Sun")
+		{
+			//Lose
+		}
+		else
+		{
+			Planet planet = collision.gameObject.GetComponent<Planet>();
+			if(planet != null)
+				trade.OpenTrade(this, planet);
 		}
 	}
 

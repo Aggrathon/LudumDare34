@@ -13,12 +13,12 @@ public static class PhysicsFunctions
 		return new Vector2(dir.x * magnitude, dir.y * magnitude);
 	}
 
-	public static Vector2 OrbitalSpeed(Rigidbody2D orbiter, Rigidbody2D center, bool switchDirection)
+	public static Vector2 OrbitalSpeed(Rigidbody2D orbiter, Rigidbody2D center, bool switchDirection = false)
 	{
 		return OrbitalSpeed(center.position - orbiter.position, center.mass, switchDirection);
 	}
 
-	public static Vector2 OrbitalSpeed(Vector2 CenterDistance, float centerMass, bool switchDirection)
+	public static Vector2 OrbitalSpeed(Vector2 CenterDistance, float centerMass, bool switchDirection = false)
 	{
 		float velocity = Mathf.Sqrt(GRAVITY_CONSTANT * centerMass / CenterDistance.magnitude);
 		if (switchDirection)
