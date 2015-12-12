@@ -23,4 +23,11 @@ public class CameraController : MonoBehaviour {
 			transform.rotation = rotation;
 		}
 	}
+
+	public void SetCameraRotating(bool value)
+	{
+		if (value)
+			transform.rotation = transform.parent.rotation;
+		doNotRotate = !value;
+	}
 }
