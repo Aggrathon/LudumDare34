@@ -9,7 +9,6 @@ public class Menu : MonoBehaviour {
 	void Start()
 	{
 		instance = this;
-		defeatPanel.SetActive(false);
 	}
 
 	public void Restart()

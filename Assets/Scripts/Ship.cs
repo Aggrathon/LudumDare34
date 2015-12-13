@@ -47,6 +47,7 @@ public class Ship : MonoBehaviour
 	public SolarSystem solarSystem;
 	public Shield shield;
 	public Trade trade;
+	public bool antiClockWiseOrbit = false;
 
 	[Header("Targetting")]
 	public float targetLength = 800f;
@@ -65,7 +66,7 @@ public class Ship : MonoBehaviour
 
 	void Start()
 	{
-		SwitchSystem(solarSystem);
+		EnterSolarSystem(solarSystem);
 		if (target == null)
 			targetMarker.gameObject.SetActive(false);
 
@@ -200,14 +201,19 @@ public class Ship : MonoBehaviour
 		}
 	}
 
-	void SwitchSystem(SolarSystem ss)
+	public void ExitSolarSystem()
 	{
-		if (solarSystem != null)
-			solarSystem.unregisterTempBody(rigidbody);
+		solarSystem.unregisterTempBody(rigidbody);
+	}
+
+	public void EnterSolarSystem(SolarSystem ss)
+	{
 		ss.registerTempBody(rigidbody);
 		solarSystem = ss;
 		rigidbody.velocity = PhysicsFunctions.OrbitalSpeed(
 			solarSystem.centerOfMass - rigidbody.position,
-			solarSystem.totalMass, false);
+			solarSystem.totalMass, antiClockWiseOrbit);
+		rigidbody.rotation = Vector2.Angle(Vector2.up, rigidbody.velocity);
+		rigidbody.angularVelocity = 0;
 	}
 }

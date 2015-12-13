@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Trade : MonoBehaviour {
+public class Trade : MonoBehaviour
+{
 
 	private float counter;
 	private bool leftLock;
@@ -23,8 +24,8 @@ public class Trade : MonoBehaviour {
 	public Ship ship;
 	public Planet planet;
 	public GameObject upgrade;
-	
-	void Update ()
+
+	void Update()
 	{
 		if (leftLock)
 		{
@@ -44,22 +45,22 @@ public class Trade : MonoBehaviour {
 			UnloadCargo();
 			return;
 		}
-		if(Input.GetButton("Left") && Input.GetButton("Right"))
+		if (Input.GetButton("Left") && Input.GetButton("Right"))
 		{
-			if(Input.GetButtonDown("Left") || Input.GetButtonDown("Right"))
+			if (Input.GetButtonDown("Left") || Input.GetButtonDown("Right"))
 			{
 				Leave();
 				return;
 			}
 		}
-		if(Input.GetButtonUp("Cancel"))
+		if (Input.GetButtonUp("Cancel"))
 		{
 			Leave();
 			return;
 		}
 
 		counter += Time.deltaTime;
-		if(counter > Planet.PRODUCTION_INTERVAL)
+		if (counter > Planet.PRODUCTION_INTERVAL)
 		{
 			counter -= Planet.PRODUCTION_INTERVAL;
 			SetStats();
@@ -91,7 +92,7 @@ public class Trade : MonoBehaviour {
 		bool upgrade = planet.TryLevelUp();
 		SetStats();
 		ship.shipStats.setCargo((float)ship.currentCargo / (float)ship.maxCargo);
-		if(upgrade)
+		if (upgrade)
 		{
 			this.upgrade.SetActive(true);
 			gameObject.SetActive(false);
@@ -132,11 +133,11 @@ public class Trade : MonoBehaviour {
 		shipText.text = "Cargo: " + ship.currentCargo + " / " + ship.maxCargo;
 		planetText.text = "Level: " + planet.level;
 
-		planetFood.text = planet.food+" / "+planet.foodDemand;
+		planetFood.text = planet.food + " / " + planet.foodDemand;
 		planetPopulation.text = planet.population + " / " + planet.populationDemand;
 		planetProducts.text = planet.products + " / " + planet.productDemand;
 
-		switch(planet.productionType)
+		switch (planet.productionType)
 		{
 			case Planet.ProductionType.Food:
 				planetFood.text += "  (+" + planet.productionAmount + ")";
@@ -154,9 +155,9 @@ public class Trade : MonoBehaviour {
 	{
 		ship.transform.parent = null;
 		Rigidbody2D rig = ship.GetComponent<Rigidbody2D>();
-		Vector3 dist = (ship.transform.position - planet.transform.position).normalized *5;
+		Vector3 dist = (ship.transform.position - planet.transform.position).normalized * 5;
 		ship.transform.position += dist;
-		Vector2 dist2 = new Vector2(dist.x*6, dist.y*6);
+		Vector2 dist2 = new Vector2(dist.x * 6, dist.y * 6);
 
 		ship.gameObject.SetActive(true);
 		rig.velocity = planet.GetComponent<Rigidbody2D>().velocity + dist2;
@@ -168,12 +169,15 @@ public class Trade : MonoBehaviour {
 	{
 		this.ship = ship;
 		this.planet = planet;
-		SetStats();
 		gameObject.SetActive(true);
 		ship.gameObject.SetActive(false);
 		ship.transform.parent = planet.transform;
+	}
 
+	public void OnEnable()
+	{
 		leftLock = Input.GetButton("Left");
 		rightLock = Input.GetButton("Right");
+		SetStats();
 	}
 }
