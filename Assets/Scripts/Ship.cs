@@ -25,7 +25,7 @@ public class Ship : MonoBehaviour
 	[Header("Abilities")]
 	public float doubleClickTime = 0.4f;
 	public float missileCooldown = 5.0f;
-	public float missileSpeed = 30f;
+	public float missileSpeed = 1000f;
 	public float shieldCooldown = 5.0f;
 	public float shieldDuration = 2.0f;
 
@@ -44,10 +44,11 @@ public class Ship : MonoBehaviour
 
 	[Header("GameObjects")]
 	public ShipUI shipStats;
-	public SolarSystem solarSystem;
+	public PlanetarySystem solarSystem;
 	public Shield shield;
 	public Trade trade;
 	public bool antiClockWiseOrbit = false;
+	public GameObject missile;
 
 	[Header("Targetting")]
 	public float targetLength = 800f;
@@ -96,23 +97,9 @@ public class Ship : MonoBehaviour
 			{
 				if (Time.time - lastDouble < doubleClickTime)
 				{
-					if (target != null) //target
+					if (!FireMissile())
 					{
-						if (missileTime <= 0)
-						{
-							missileTime = missileCooldown;
-							shipStats.setMissile(0f);
-							//Deploy Missile
-						}
-					}
-					else
-					{
-						if (shieldTime <= 0)
-						{
-							shieldTime = shieldCooldown;
-							shipStats.setShield(0f);
-							shield.EnableShield(shieldDuration);
-						}
+						ActivateShield();
 					}
 					lastDouble = 0f;
 				}
@@ -146,8 +133,8 @@ public class Ship : MonoBehaviour
 		}
 		else if (target != null)
 		{
-			float angle = Vector2.Angle(transform.forward, target.transform.position - transform.position);
-			if (angle < targetAngle && angle > -targetAngle)
+			float angle = Vector2.Angle(transform.up, target.transform.position - transform.position);
+			if (angle < targetAngle && target.gameObject.activeSelf)
 			{
 				targetMarker.position = target.position;
 			}
@@ -157,6 +144,30 @@ public class Ship : MonoBehaviour
 				targetMarker.gameObject.SetActive(false);
 			}
 		}
+	}
+
+	public bool FireMissile()
+	{
+		if (target != null && missileTime <= 0)
+		{
+			missileTime = missileCooldown;
+			shipStats.setMissile(0f);
+			ObjectPool.GetObject(missile).GetComponent<Missile>().Setup(rigidbody, missileSpeed, target);
+			return true;
+		}
+		return false;
+	}
+
+	public bool ActivateShield()
+	{
+		if (shieldTime <= 0)
+		{
+			shieldTime = shieldCooldown;
+			shipStats.setShield(0f);
+			shield.EnableShield(shieldDuration);
+			return true;
+		}
+		return false;
 	}
 
 	void FixedUpdate()
@@ -183,14 +194,14 @@ public class Ship : MonoBehaviour
 			currentHealth--;
 			if (currentHealth == 0)
 			{
-				Menu.instance.Defeat();
+				FindObjectOfType<Menu>().Defeat();
 				gameObject.SetActive(false);
 			}
 			shipStats.setHealth((float)currentHealth/(float)maxHealth);
 		}
 		else if (collision.gameObject.tag == "Sun")
 		{
-			Menu.instance.Defeat();
+			FindObjectOfType<Menu>().Defeat();
 			gameObject.SetActive(false);
 		}
 		else
@@ -206,7 +217,7 @@ public class Ship : MonoBehaviour
 		solarSystem.unregisterTempBody(rigidbody);
 	}
 
-	public void EnterSolarSystem(SolarSystem ss)
+	public void EnterSolarSystem(PlanetarySystem ss)
 	{
 		ss.registerTempBody(rigidbody);
 		solarSystem = ss;

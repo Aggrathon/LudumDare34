@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class ObjectPool
 {
-	static SortedDictionary<GameObject, LinkedList<GameObject>> pools = new SortedDictionary<GameObject, LinkedList<GameObject>>();
+	static Dictionary<GameObject, LinkedList<GameObject>> pools = new Dictionary<GameObject, LinkedList<GameObject>>();
 	static Transform parent;
 
 	public static void CreatePool(GameObject prototype, int prewarmAmount)

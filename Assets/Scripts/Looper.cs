@@ -6,7 +6,7 @@ public class Looper : MonoBehaviour {
 	private Vector3 random;
 
 	public float speed = 10f;
-	public float turnSpeed = 10f;
+	public float turnSpeed = 1f;
 	public float randomness = 2f;
 	public float randomInterval = 2f;
 	
@@ -14,9 +14,13 @@ public class Looper : MonoBehaviour {
 	
 	void Start()
 	{
+		speed += Random.Range(-randomness, +randomness);
+	}
+
+	void OnEnable()
+	{
 		float rotation = Random.Range(0f, 360f);
 		direction = new Vector3(Mathf.Sin(rotation), Mathf.Cos(rotation), 0f);
-		transform.Translate(direction);
 		StartCoroutine(RandomChange());
 	}
 

@@ -26,4 +26,19 @@ public static class PhysicsFunctions
 		CenterDistance = new Vector2(1, -CenterDistance.x / CenterDistance.y);
 		return CenterDistance * (velocity / CenterDistance.magnitude);
 	}
+
+	public static void RigidBodyFollow(Rigidbody2D rig, Vector2 target, float acc, float turn, float angleLimit)
+	{
+		Vector2 dir = rig.transform.InverseTransformPoint(target);
+		float angle = Mathf.Atan2(dir.x, dir.y);
+		if (angle > angleLimit || angle < -angleLimit)
+		{
+			rig.AddTorque((angle < 0 ? turn : -turn) * Time.fixedDeltaTime);
+        }
+		else
+		{
+			rig.AddForce(rig.transform.up * acc * Time.fixedDeltaTime);
+			rig.AddTorque(-rig.angularVelocity/ (turn *(1f-angle / angleLimit)*Time.fixedDeltaTime));
+		}
+	}
 }

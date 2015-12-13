@@ -21,7 +21,7 @@ public class Warper : MonoBehaviour
 	
 	public void Warp(Ship ship, WarpGate target, Vector3 start)
 	{
-		transform.position = start;
+		transform.position = start + Vector3.back * 100f;
 		ship.transform.position = start;
 		ship.transform.parent = transform;
 		GetComponent<TrailRenderer>().Clear();
@@ -57,7 +57,7 @@ public class Warper : MonoBehaviour
 			ship.gameObject.SetActive(true);
 			ship.antiClockWiseOrbit = target.antiClockWiseOrbit;
 			gameObject.SetActive(false);
-			ship.EnterSolarSystem(target.transform.parent.GetComponent<SolarSystem>());
+			ship.EnterSolarSystem(target.transform.parent.GetComponent<PlanetarySystem>());
 		}
 		else
 		{

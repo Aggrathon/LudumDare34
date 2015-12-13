@@ -38,7 +38,7 @@ public class Planet : GravityObject
 
 	public void Start()
 	{
-		SolarSystem solarSystem = transform.parent.GetComponent<SolarSystem>();
+		PlanetarySystem solarSystem = transform.parent.GetComponent<PlanetarySystem>();
 		Vector2 center = solarSystem.centerOfMass;
 		Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
 
@@ -83,6 +83,7 @@ public class Planet : GravityObject
 			populationDemand = (int)(populationDemand * demandScaling);
 
 			numUpgrades++;
+			Quest.instance.Grow(level);
 			return true;
 		}
 		return false;

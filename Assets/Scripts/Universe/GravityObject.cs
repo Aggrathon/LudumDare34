@@ -6,7 +6,7 @@ public class GravityObject : MonoBehaviour
 
 	protected void Awake()
 	{
-		transform.parent.GetComponent<SolarSystem>().registerConstantBody(GetComponent<Rigidbody2D>());
+		transform.parent.GetComponent<PlanetarySystem>().registerConstantBody(GetComponent<Rigidbody2D>());
 	}
 
 	public void OnDrawGizmos()

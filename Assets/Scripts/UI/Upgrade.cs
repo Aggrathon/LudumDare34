@@ -12,12 +12,12 @@ public class Upgrade : MonoBehaviour
 	private int option1 = 0;
 	private int option2 = 1;
 	private UpgradeOption[] options = new UpgradeOption[] {
-		new UpgradeOption("Engine", 10, trade => trade.ship.acceleration *= 1.2f ),
-		new UpgradeOption("Turning Thrusters", 6, trade => trade.ship.turnRate *= 1.2f ),
-		new UpgradeOption("Shield Recharge", 2, trade => trade.ship.shieldCooldown *= 0.8f ),
+		new UpgradeOption("Engine", 10, trade => trade.ship.acceleration *= 1.4f ),
+		new UpgradeOption("Turning Thrusters", 6, trade => trade.ship.turnRate *= 1.4f ),
+		new UpgradeOption("Shield Recharge", 2, trade => trade.ship.shieldCooldown *= 0.7f ),
 		new UpgradeOption("Shield Duration", 1, trade => trade.ship.shieldDuration *= 1.2f ),
 		new UpgradeOption("Missile Speed", 1, trade => trade.ship.missileSpeed *= 1.3f ),
-		new UpgradeOption("Missile Loader", 4, trade => trade.ship.missileCooldown *= 0.8f ),
+		new UpgradeOption("Missile Loader", 4, trade => trade.ship.missileCooldown *= 0.7f ),
 		new UpgradeOption("Cargo Packer", 6, trade => { trade.ship.maxCargo = (int)(trade.ship.maxCargo*1.5); trade.ship.shipStats.setCargo((float)trade.ship.currentCargo/(float)trade.ship.maxCargo); } ),
 		new UpgradeOption("Repair Ship", 6, trade => { trade.ship.currentHealth = trade.ship.maxHealth; trade.ship.shipStats.setHealth(1f); } ),
 		new UpgradeOption("Reinforced Hulls", 3, trade => { trade.ship.maxHealth++; trade.ship.currentHealth++; trade.ship.shipStats.setHealth((float)trade.ship.currentHealth/(float)trade.ship.maxHealth); } ),

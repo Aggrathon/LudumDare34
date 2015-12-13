@@ -7,17 +7,28 @@ public class WarpGate : MonoBehaviour
 	public WarpGate target;
 	public Warper warper;
 	public bool antiClockWiseOrbit = false;
+	public GameObject looper;
+	public int looperAmount = 10;
+	public GameObject[] loopers;
 
+	public void Awake()
+	{
+		ObjectPool.CreatePool(looper, looperAmount);
+	}
 
 	public void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(tempDisable)
+		if (collision.gameObject.tag == "Player")
 		{
-			tempDisable = false;
-		}
-		else if (collision.gameObject.tag == "Player")
-		{
-			warper.Warp(collision.gameObject.GetComponent<Ship>(), target, transform.position);
+			if (tempDisable)
+			{
+				tempDisable = false;
+			}
+			else
+			{
+				warper.Warp(collision.gameObject.GetComponent<Ship>(), target, transform.position);
+				Quest.instance.Travel();
+			}
 		}
 	}
 
@@ -28,7 +39,25 @@ public class WarpGate : MonoBehaviour
 
 	public void PrepareEnemies()
 	{
+		transform.parent.GetComponent<PlanetarySystem>().SpawnEnemies();
+	}
 
+	public void SpawnLoopers()
+	{
+		loopers = new GameObject[looperAmount];
+		for (int i = 0; i < looperAmount; i++)
+		{
+			loopers[i] = ObjectPool.GetObject(looper);
+			loopers[i].transform.position = transform.position;
+			loopers[i].transform.parent = transform;
+		}
+	}
+	public void DespawnLoopers()
+	{
+		for (int i = 0; i < loopers.Length; i++)
+		{
+			loopers[i].gameObject.SetActive(false);
+		}
 	}
 
 	public void OnDrawGizmos()
