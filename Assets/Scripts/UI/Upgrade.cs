@@ -13,7 +13,7 @@ public class Upgrade : MonoBehaviour
 	private int option2 = 1;
 	private UpgradeOption[] options = new UpgradeOption[] {
 		new UpgradeOption("Engine", 10, trade => trade.ship.acceleration *= 1.4f ),
-		new UpgradeOption("Turning Thrusters", 6, trade => trade.ship.turnRate *= 1.4f ),
+		new UpgradeOption("Turning Thrusters", 6, trade => trade.ship.turnRate *= 1.5f ),
 		new UpgradeOption("Shield Recharge", 2, trade => trade.ship.shieldCooldown *= 0.7f ),
 		new UpgradeOption("Shield Duration", 1, trade => trade.ship.shieldDuration *= 1.2f ),
 		new UpgradeOption("Missile Speed", 1, trade => trade.ship.missileSpeed *= 1.3f ),
