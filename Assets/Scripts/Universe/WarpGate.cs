@@ -26,6 +26,11 @@ public class WarpGate : MonoBehaviour
 		tempDisable = true;
 	}
 
+	public void PrepareEnemies()
+	{
+
+	}
+
 	public void OnDrawGizmos()
 	{
 		if(target != null)

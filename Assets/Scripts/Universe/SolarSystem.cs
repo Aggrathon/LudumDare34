@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public class SolarSystem : MonoBehaviour
 {
+	public int enemyTreshold = 5;
+	public float enemyScaling = 0.3f;
+
 
 	private Rigidbody2D[] bodies = new Rigidbody2D[] { };
 	private List<Rigidbody2D> tempBodies = new List<Rigidbody2D>();

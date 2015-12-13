@@ -26,7 +26,9 @@ public class Warper : MonoBehaviour
 		ship.transform.parent = transform;
 		GetComponent<TrailRenderer>().Clear();
 		camZoom = camera.orthographicSize;
+
 		ship.ExitSolarSystem();
+		target.PrepareEnemies();
 
 		gameObject.SetActive(true);
 

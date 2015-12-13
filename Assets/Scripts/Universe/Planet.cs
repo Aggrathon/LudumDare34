@@ -11,7 +11,8 @@ public class Planet : GravityObject
 		Products
 	}
 
-	public static float PRODUCTION_INTERVAL = 1.5f;
+	public const float PRODUCTION_INTERVAL = 1.5f;
+	public static int numUpgrades { get; protected set; }
 
 	[Header("Planet")]
 	public bool antiClockWiseOrbit = false;
@@ -80,6 +81,8 @@ public class Planet : GravityObject
 			foodDemand = (int)(foodDemand * demandScaling);
 			productDemand = (int)(productDemand * demandScaling);
 			populationDemand = (int)(populationDemand * demandScaling);
+
+			numUpgrades++;
 			return true;
 		}
 		return false;
