@@ -182,13 +182,15 @@ public class Ship : MonoBehaviour
 			currentHealth--;
 			if (currentHealth == 0)
 			{
-				//LOSE
+				Menu.instance.Defeat();
+				gameObject.SetActive(false);
 			}
 			shipStats.setHealth((float)currentHealth/(float)maxHealth);
 		}
 		else if (collision.gameObject.tag == "Sun")
 		{
-			//Lose
+			Menu.instance.Defeat();
+			gameObject.SetActive(false);
 		}
 		else
 		{

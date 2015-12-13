@@ -5,10 +5,15 @@ using System.Collections;
 public class Trade : MonoBehaviour {
 
 	private float counter;
+	private bool leftLock;
+	private bool rightLock;
 
 	public Text shipPopulation;
 	public Text shipFood;
 	public Text shipProducts;
+
+	public Text shipText;
+	public Text planetText;
 
 	public Text planetPopulation;
 	public Text planetFood;
@@ -17,15 +22,24 @@ public class Trade : MonoBehaviour {
 	[Header("Trade")]
 	public Ship ship;
 	public Planet planet;
+	public GameObject upgrade;
 	
 	void Update ()
 	{
-		if (Input.GetButtonUp("Left"))
+		if (leftLock)
+		{
+			leftLock = Input.GetButton("Left");
+		}
+		else if (Input.GetButtonUp("Left"))
 		{
 			LoadCargo();
 			return;
 		}
-		if (Input.GetButtonUp("Right"))
+		if (rightLock)
+		{
+			rightLock = Input.GetButton("Right");
+		}
+		else if (Input.GetButtonUp("Right"))
 		{
 			UnloadCargo();
 			return;
@@ -74,8 +88,14 @@ public class Trade : MonoBehaviour {
 			ship.currentProducts -= prod;
 			planet.products += prod;
 		}
+		bool upgrade = planet.TryLevelUp();
 		SetStats();
 		ship.shipStats.setCargo((float)ship.currentCargo / (float)ship.maxCargo);
+		if(upgrade)
+		{
+			this.upgrade.SetActive(true);
+			gameObject.SetActive(false);
+		}
 	}
 
 	public void LoadCargo()
@@ -109,9 +129,12 @@ public class Trade : MonoBehaviour {
 		shipProducts.text = ship.currentProducts.ToString();
 		shipPopulation.text = ship.currentPopulation.ToString();
 
-		planetFood.text = planet.food+"/"+planet.foodDemand;
-		planetPopulation.text = planet.population + "/" + planet.populationDemand;
-		planetProducts.text = planet.products + "/" + planet.productDemand;
+		shipText.text = "Cargo: " + ship.currentCargo + " / " + ship.maxCargo;
+		planetText.text = "Level: " + planet.level;
+
+		planetFood.text = planet.food+" / "+planet.foodDemand;
+		planetPopulation.text = planet.population + " / " + planet.populationDemand;
+		planetProducts.text = planet.products + " / " + planet.productDemand;
 
 		switch(planet.productionType)
 		{
@@ -149,5 +172,8 @@ public class Trade : MonoBehaviour {
 		gameObject.SetActive(true);
 		ship.gameObject.SetActive(false);
 		ship.transform.parent = planet.transform;
+
+		leftLock = Input.GetButton("Left");
+		rightLock = Input.GetButton("Right");
 	}
 }

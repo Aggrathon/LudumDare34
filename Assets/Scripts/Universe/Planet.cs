@@ -15,6 +15,9 @@ public class Planet : GravityObject
 
 	[Header("Planet")]
 	public bool antiClockWiseOrbit = false;
+	[SerializeField]
+	private int _level = 0;
+	public int level { get { return _level; } set { _level = value; } } //Win condition number of total levels
 
 	[Header("Production")]
 	public ProductionType productionType;
@@ -53,16 +56,32 @@ public class Planet : GravityObject
 			switch(productionType)
 			{
 				case ProductionType.Food:
-					food += productionAmount;
+					food = Mathf.Min(food + productionAmount, (int)(foodDemand * productionCapMultiplier));
 					break;
 				case ProductionType.Population:
-					population += productionAmount;
+					population = Mathf.Min(population + productionAmount, (int)(populationDemand * productionCapMultiplier));
 					break;
 				case ProductionType.Products:
-					products += productionAmount;
+					products = Mathf.Min(products + productionAmount, (int)(productDemand * productionCapMultiplier));
 					break;
 			}
 			yield return wait;
 		}
+	}
+
+	public bool TryLevelUp()
+	{
+		if (food >= foodDemand && products >= productDemand && population >= populationDemand)
+		{
+			food -= foodDemand;
+			products -= productDemand;
+			population -= populationDemand;
+			level++;
+			foodDemand = (int)(foodDemand * demandScaling);
+			productDemand = (int)(productDemand * demandScaling);
+			populationDemand = (int)(populationDemand * demandScaling);
+			return true;
+		}
+		return false;
 	}
 }
