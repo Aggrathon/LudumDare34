@@ -101,5 +101,6 @@ public class Quest : MonoBehaviour {
 	public void End()
 	{
 		end.SetActive(true);
+		AudioController.Tune();
 	}
 }

@@ -152,6 +152,7 @@ public class Ship : MonoBehaviour
 		{
 			missileTime = missileCooldown;
 			shipStats.setMissile(0f);
+			AudioController.Launch();
 			ObjectPool.GetObject(missile).GetComponent<Missile>().Setup(rigidbody, missileSpeed, target);
 			return true;
 		}
@@ -165,6 +166,7 @@ public class Ship : MonoBehaviour
 			shieldTime = shieldCooldown;
 			shipStats.setShield(0f);
 			shield.EnableShield(shieldDuration);
+			AudioController.Shield();
 			return true;
 		}
 		return false;
@@ -198,11 +200,13 @@ public class Ship : MonoBehaviour
 				gameObject.SetActive(false);
 			}
 			shipStats.setHealth((float)currentHealth/(float)maxHealth);
+			AudioController.Damage();
 		}
 		else if (collision.gameObject.tag == "Sun")
 		{
 			FindObjectOfType<Menu>().Defeat();
 			gameObject.SetActive(false);
+			AudioController.Damage();
 		}
 		else
 		{

@@ -90,13 +90,15 @@ public class Trade : MonoBehaviour
 			planet.products += prod;
 		}
 		bool upgrade = planet.TryLevelUp();
-		SetStats();
 		ship.shipStats.setCargo((float)ship.currentCargo / (float)ship.maxCargo);
 		if (upgrade)
 		{
+			ship.currentHealth = Mathf.Min(ship.currentHealth + 1, ship.maxHealth);
+			ship.shipStats.setHealth((float)ship.currentHealth / (float)ship.maxHealth);
 			this.upgrade.SetActive(true);
 			gameObject.SetActive(false);
 		}
+		SetStats();
 	}
 
 	public void LoadCargo()
