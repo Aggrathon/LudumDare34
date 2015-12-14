@@ -81,6 +81,7 @@ public class Planet : GravityObject
 			foodDemand = (int)(foodDemand * demandScaling);
 			productDemand = (int)(productDemand * demandScaling);
 			populationDemand = (int)(populationDemand * demandScaling);
+			productionAmount++;
 
 			numUpgrades++;
 			Quest.instance.Grow(level);
