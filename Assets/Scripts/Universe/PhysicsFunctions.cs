@@ -37,8 +37,20 @@ public static class PhysicsFunctions
         }
 		else
 		{
+			float torque = - turn * angle/angleLimit;
+			if(angle*rig.angularVelocity > 1)
+			{
+				if (rig.angularVelocity > angleLimit)
+				{
+					torque -= turn*0.5f;
+				}
+				else if(rig.angularVelocity < -angleLimit)
+				{
+					torque += turn*0.5f;
+				}
+			}
 			rig.AddForce(rig.transform.up * acc * Time.fixedDeltaTime);
-			rig.AddTorque(-rig.angularVelocity/ (turn *(1f-angle / angleLimit)*Time.fixedDeltaTime));
+			rig.AddTorque(torque*Time.fixedDeltaTime);
 		}
 	}
 }
